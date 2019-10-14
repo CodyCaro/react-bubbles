@@ -19,19 +19,32 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
-    console.log(colorToEdit.id);
-    console.log(colorToEdit.color);
-    console.log(colorToEdit.code.hex);
     axiosWithAuth()
       .put(`/colors/${colorToEdit.id}`, colorToEdit)
       .catch(err => console.log(err));
-    // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now?
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    axiosWithAuth()
+      .delete(`/colors/${color.id}`, color)
+      .then(res => {
+        console.log(res);
+        updateColors([...colors]);
+      })
+      .catch(err => console.log(err));
+
+    let colorToRemove = 0;
+
+    for (let i = 0; i < colors.length; i++) {
+      if (color.id === colors[i]) {
+        colorToRemove = colors.indexOf(colors[i]);
+      }
+    }
+
+    colors.splice(colorToRemove, 1);
+    let newColors = [...colors];
+    updateColors(newColors);
   };
 
   return (
