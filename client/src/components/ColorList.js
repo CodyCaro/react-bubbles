@@ -22,6 +22,14 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
       .put(`/colors/${colorToEdit.id}`, colorToEdit)
       .catch(err => console.log(err));
+
+    for (let i = 0; i < colors.length; i++) {
+      if (colors[i].id === colorToEdit.id) {
+        colors[i] = colorToEdit;
+      }
+    }
+    let newColors = [...colors];
+    updateColors(newColors);
   };
 
   const deleteColor = color => {
